@@ -214,8 +214,9 @@ export default function ProductPage() {
                 <div className="text-sm">
                   <p className="font-semibold">100% Free Returns</p>
                   <p className="text-muted-foreground">
-                    If it doesn't fit or match, You have 30 days to treat our
-                    hearts.
+                    {
+                      " If it doesn't fit or match, You have 30 days to treat our hearts. "
+                    }
                   </p>
                 </div>
               </div>
@@ -225,14 +226,9 @@ export default function ProductPage() {
             <div>
               <p className="font-semibold text-lg">Description</p>
               <p className="text-muted-foreground">
-                Keep your ho me organized, yet elegant with storage cabinets by
-                Onita Patio Furniture. These cabinets not only make a great
-                storage units, but also bring a great decorative accent to your
-                decor. Traditionally designed, they are perfect to be used in
-                the hallway, living room, bedroom, office or any place where you
-                need to store or display things. Made of high quality materials,
-                they are sturdy and durable for years. Bring one-of-a-kind look
-                to your interior with furniture from Onita Furniture!
+                {
+                  " Keep your ho me organized, yet elegant with storage cabinets by Onita Patio Furniture. These cabinets not only make a great storage units, but also bring a great decorative accent to your decor. Traditionally designed, they are perfect to be used in the hallway, living room, bedroom, office or any place where you need to store or display things. Made of high quality materials, they are sturdy and durable for years. Bring one-of-a-kind look to your interior with furniture from Onita Furniture! "
+                }
               </p>
             </div>
             <div>

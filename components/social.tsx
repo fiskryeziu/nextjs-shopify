@@ -21,7 +21,7 @@ export default function Social() {
       </div>
       <Carousel className="w-full">
         <CarouselContent>
-          {socials.map((social, idx) => (
+          {socials.map((social) => (
             <CarouselItem
               key={social.id}
               className="basis-1/2 sm:basis-1/3 md:basis-1/4 xl:basis-1/5"

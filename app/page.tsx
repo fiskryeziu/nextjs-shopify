@@ -15,21 +15,27 @@ import {
 import { Suspense } from "react";
 
 export default async function Home() {
-  const data = await getBannerInfo();
-  const products = await getProducts();
-  const relatedProducts = await getRelatedProducts();
+  const bannerInfoPromise = getBannerInfo();
+  const productsPromise = getProducts();
+  const relatedProductsPromise = getRelatedProducts();
+
+  const [bannerInfo, products, relatedProducts] = await Promise.all([
+    bannerInfoPromise,
+    productsPromise,
+    relatedProductsPromise,
+  ]);
   return (
     <main>
       <Suspense fallback={null}>
-        <Banner data={data} />
+        <Banner data={bannerInfo} />
       </Suspense>
       <Features />
       <Benefits />
       <Categories />
       {/* NOTE: suspense null for now */}
-      <Suspense fallback={null}>
-        <Products products={products} />
-      </Suspense>
+      {/* <Suspense fallback={null}> */}
+      {/*   <Products products={products} /> */}
+      {/* </Suspense> */}
       {/* NOTE: suspense null for now */}
       <Suspense fallback={null}>
         <RelatedProducts products={relatedProducts} />

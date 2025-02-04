@@ -1,14 +1,22 @@
 "use server";
 
+import { Categories } from "@/components/products";
 import { ShopifyMenuOperation } from "../types";
+import { headers } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
+import { TAGS } from "../constants";
+import { revalidateTag } from "next/cache";
 const domain = process.env.SHOPIFY_DOMAIN as string;
 
 export async function shopifyFetch<T>({
   query,
   cache = "force-cache",
+  tags,
 }: {
   query: string;
   cache?: RequestCache;
+
+  tags?: string[];
 }): Promise<{ status: number; body: T } | { status: number; error: string }> {
   const endpoint = process.env.SHOPIFY_STORE_DOMAIN as string;
   const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN as string;
@@ -22,6 +30,7 @@ export async function shopifyFetch<T>({
       },
       body: JSON.stringify({ query }),
       cache,
+      ...(tags && { next: { tags } }),
     });
 
     return {
@@ -54,6 +63,7 @@ export async function getAllProducts() {
           }
         }
       `,
+    tags: [TAGS.products],
   });
 }
 
@@ -85,7 +95,7 @@ export async function getMenu() {
   );
 }
 
-export async function getBannerInfo(type?: string) {
+export async function getBannerInfo() {
   const res = await shopifyFetch({
     query:
       /* GraphQL */
@@ -110,6 +120,7 @@ export async function getBannerInfo(type?: string) {
           }
         }
       `,
+    tags: [TAGS.metaobjects],
   });
 
   const images = res.body?.data?.metaobject?.fields[0].references?.nodes.map(
@@ -125,7 +136,7 @@ export async function getBannerInfo(type?: string) {
     titles: JSON.parse(title),
   };
 }
-export async function getProducts() {
+export async function getProducts(): Promise<Categories> {
   const res = await shopifyFetch({
     query:
       /* GraphQL */
@@ -209,6 +220,7 @@ export async function getProducts() {
         }
       `,
     cache: "no-store",
+    tags: [TAGS.collections],
   });
 
   const transformProducts = (data) => {
@@ -295,7 +307,63 @@ export async function getRelatedProducts() {
       isOnSale,
     };
   });
-  console.log(transformProducts);
 
   return transformProducts;
+}
+
+export async function revalidate(req: NextRequest): Promise<NextResponse> {
+  // Webhook topics for collections, products, and metaobjects
+  const collectionWebhooks = [
+    "collections/create",
+    "collections/delete",
+    "collections/update",
+  ];
+  const productWebhooks = [
+    "products/create",
+    "products/delete",
+    "products/update",
+  ];
+  const metaobjectWebhooks = [
+    "metaobjects/create",
+    "metaobjects/delete",
+    "metaobjects/update",
+  ];
+
+  const topic = (await headers()).get("x-shopify-topic") || "unknown";
+  const secret = req.nextUrl.searchParams.get("secret");
+
+  const isCollectionUpdate = collectionWebhooks.includes(topic);
+  const isProductUpdate = productWebhooks.includes(topic);
+  const isMetaobjectUpdate = metaobjectWebhooks.includes(topic);
+
+  // Ensure the secret matches
+  if (!secret || secret !== process.env.SHOPIFY_REVALIDATION_SECRET) {
+    console.error("Invalid revalidation secret.");
+    return NextResponse.json({ status: 401 });
+  }
+
+  // No revalidation needed for unhandled topics
+  if (!isCollectionUpdate && !isProductUpdate && !isMetaobjectUpdate) {
+    return NextResponse.json({ status: 200 });
+  }
+
+  // Revalidate for collections or products
+  if (isCollectionUpdate) {
+    revalidateTag(TAGS.collections);
+  }
+
+  if (isProductUpdate) {
+    revalidateTag(TAGS.products);
+  }
+
+  // Handle metaobject updates with filters
+  if (isMetaobjectUpdate) {
+    const filter = req.nextUrl.searchParams.get("filter") || "";
+
+    if (filter.includes("type:banner")) {
+      revalidateTag(TAGS.metaobjectsBanner);
+    }
+  }
+
+  return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
 }

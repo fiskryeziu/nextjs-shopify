@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
+  CarouselApi,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
@@ -12,7 +13,7 @@ import { Button } from "./ui/button";
 import { TBanner } from "@/lib/types";
 
 export default function Banner({ data }: { data: TBanner }) {
-  const [api, setApi] = React.useState<any>();
+  const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
 
   React.useEffect(() => {

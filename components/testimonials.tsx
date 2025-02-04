@@ -83,7 +83,7 @@ export default function Testimonials() {
     });
   }, [api]);
 
-  function formatDate(dateString) {
+  function formatDate(dateString: string) {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
       year: "numeric",
@@ -98,7 +98,7 @@ export default function Testimonials() {
       </h2>
       <Carousel setApi={setApi} className="w-full mx-auto">
         <CarouselContent>
-          {testimonials.map((testimonial, idx) => (
+          {testimonials.map((testimonial) => (
             <CarouselItem
               key={testimonial.id}
               className="basis-full md:basis-1/2 lg:basis-1/3"

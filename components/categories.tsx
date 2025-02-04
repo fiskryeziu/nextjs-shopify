@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import {
   Carousel,
+  CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
@@ -21,8 +22,8 @@ const categories = [
 ];
 
 export default function Categories() {
-  const [api, setApi] = useState<any>();
-  const [current, setCurrent] = useState(0);
+  const [api, setApi] = useState<CarouselApi>();
+  const [, setCurrent] = useState(0);
 
   useEffect(() => {
     if (!api) {
