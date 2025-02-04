@@ -9,29 +9,29 @@ export type Categories = {
 };
 export default function Products({ products }: { products: Categories }) {
   return (
-    <section className="container mx-auto px-4 py-16">
+    <section className="container mx-auto  py-16">
       <Tabs defaultValue="bestSellers" className="w-full">
         <TabsList className="grid w-72 grid-cols-3 mb-8 mx-auto rounded-xl bg-secondar">
-          <TabsTrigger value="best-sellers" className="rounded-xl">
+          <TabsTrigger value="bestSellers" className="rounded-xl">
             Best Sellers
           </TabsTrigger>
-          <TabsTrigger value="on-sale" className="rounded-xl">
+          <TabsTrigger value="onSale" className="rounded-xl">
             On Sale
           </TabsTrigger>
-          <TabsTrigger value="new-arrivals" className="rounded-xl">
+          <TabsTrigger value="newArrivals" className="rounded-xl">
             New Arrivals
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="best-sellers">
+        <TabsContent value="bestSellers">
           <ProductCarousel products={products["best-sellers"]} />
         </TabsContent>
 
-        <TabsContent value="on-sale">
+        <TabsContent value="onSale">
           <ProductCarousel products={products["on-sale"]} />
         </TabsContent>
 
-        <TabsContent value="new-arrivals">
+        <TabsContent value="newArrivals">
           <ProductCarousel products={products["new-arrivals"]} />
         </TabsContent>
       </Tabs>

@@ -219,7 +219,6 @@ export async function getProducts(): Promise<Categories> {
           }
         }
       `,
-    cache: "no-store",
     tags: [TAGS.collections],
   });
 
@@ -288,7 +287,6 @@ export async function getRelatedProducts() {
           }
         }
       `,
-    cache: "no-store",
   });
 
   const transformProducts = res.body?.data?.products?.edges.map((product) => {

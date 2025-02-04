@@ -24,6 +24,7 @@ export default async function Home() {
     productsPromise,
     relatedProductsPromise,
   ]);
+
   return (
     <main>
       <Suspense fallback={null}>
@@ -33,9 +34,9 @@ export default async function Home() {
       <Benefits />
       <Categories />
       {/* NOTE: suspense null for now */}
-      {/* <Suspense fallback={null}> */}
-      {/*   <Products products={products} /> */}
-      {/* </Suspense> */}
+      <Suspense fallback={null}>
+        <Products products={products} />
+      </Suspense>
       {/* NOTE: suspense null for now */}
       <Suspense fallback={null}>
         <RelatedProducts products={relatedProducts} />
