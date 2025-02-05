@@ -43,7 +43,7 @@ export default function Benefits() {
           key={idx}
         >
           {item.icon}
-          <p>{item.title}</p>
+          <p className="text-center">{item.title}</p>
           <p className="text-sm text-gray-700 text-center">{item.subtitle}</p>
         </div>
       ))}

@@ -285,7 +285,7 @@ export async function getRelatedProducts() {
           }
         }
       `,
-    tags: [TAGS.products],
+    tags: [TAGS.products, TAGS.products],
   });
 
   const transformProducts = res.body?.data?.products?.edges.map((product) => {
@@ -329,6 +329,11 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
   if (!secret || secret !== process.env.SHOPIFY_REVALIDATION_SECRET) {
     console.error("Invalid revalidation secret.");
     return NextResponse.json({ status: 401 });
+  }
+
+  if (!isCollectionUpdate && !isProductUpdate) {
+    // We don't need to revalidate anything for any other topics.
+    return NextResponse.json({ status: 200 });
   }
 
   if (isCollectionUpdate) {

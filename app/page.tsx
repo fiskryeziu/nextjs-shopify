@@ -14,6 +14,10 @@ import {
 } from "@/lib/actions/shopify";
 import { Suspense } from "react";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+// TODO: fix the styling prolems with, benefit comp product card..
 export default async function Home() {
   const bannerInfoPromise = getBannerInfo();
   const productsPromise = getProducts();
@@ -34,13 +38,9 @@ export default async function Home() {
       <Benefits />
       <Categories />
       {/* NOTE: suspense null for now */}
-      <Suspense fallback={null}>
-        <Products products={products} />
-      </Suspense>
+      <Products products={products} />
       {/* NOTE: suspense null for now */}
-      <Suspense fallback={null}>
-        <RelatedProducts products={relatedProducts} />
-      </Suspense>
+      <RelatedProducts products={relatedProducts} />
       <Testimonials />
       <Social />
       <Brand />

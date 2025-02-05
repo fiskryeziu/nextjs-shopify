@@ -52,9 +52,10 @@ export default function Categories() {
                       src={category.image || "/placeholder.svg"}
                       alt={category.name}
                       fill
-                      className="object-cover hover:scale-125 duration-300 transition-transform"
+                      className="object-cover hover:scale-125 focus-within:scale-125 duration-300 transition-transform"
+                      tabIndex={2}
                     />
-                    <Button className="absolute bottom-4 left-1/2 bg-white text-black hover:text-white transform -translate-x-1/2 w-28 z-10">
+                    <Button className="absolute bottom-4 left-1/2 bg-white text-black hover:bg-primary hover:text-white transform -translate-x-1/2 w-28 z-10">
                       {category.name}
                     </Button>
                     <div className="absolute inset-0 bg-black/40 pointer-events-none" />

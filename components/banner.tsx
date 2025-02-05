@@ -39,10 +39,10 @@ export default function Banner({ data }: { data: TBanner }) {
                   <p className="text-xs md:text-base lg:text-xl">
                     Sale! up to 50% off!
                   </p>
-                  <h1 className="text-2xl md:text-4xl lg:text-7xl w-full md:w-[15ch] capitalize font-medium">
+                  <h1 className="text-2xl md:text-4xl lg:text-7xl w-[15ch] sm:w-[20ch] md:w-[15ch] capitalize font-medium">
                     {data.titles[idx]}
                   </h1>
-                  <Button className="sm:px-3 sm:py-2 sm:text-sm md:px-4 md:py-2 md:text-base lg:px-6 lg:py-3 lg:text-lg">
+                  <Button className="px-3 py-1 text-sm md:px-4 md:py-2 md:text-base lg:px-6 lg:py-3 lg:text-lg">
                     Shop now
                   </Button>{" "}
                 </div>{" "}

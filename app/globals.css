@@ -140,3 +140,8 @@
     @apply bg-background text-foreground;
   }
 }
+@media (hover: hover) {
+  .hover\:underline:hover {
+    text-decoration: underline;
+  }
+}

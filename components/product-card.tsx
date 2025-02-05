@@ -20,7 +20,7 @@ export default function ProductCard({ item }: { item: Product }) {
     <Link href={"/product/1"}>
       <Card
         key={item.name}
-        className="overflow-hidden bg-transparent border-none"
+        className="overflow-hidden bg-transparent border-none shadow-none"
       >
         <CardContent className="p-0">
           <div className="relative aspect-[2/3] bg-gray-200">
@@ -40,17 +40,19 @@ export default function ProductCard({ item }: { item: Product }) {
             )}
           </div>
         </CardContent>
-        <CardFooter className="text-left py-2 pl-1">
+        <CardFooter className="text-left py-2 pl-1 shadow-none">
           <div>
-            <p className="text-base text-primary">{item.name}</p>
-            <div className="flex gap-2">
-              <p>{item.price?.amount}$</p>
+            <p className="text-sm md:text-base text-primary">{item.name}</p>
+            <div className="flex gap-2 flex-wrap items-center">
+              <p className="text-xs md:text-sm font-semibold">
+                {item.price?.amount}$
+              </p>
               {item.isOnSale && (
                 <>
-                  <p className="line-through text-secondary-foreground">
+                  <p className="text-xs md:text-base line-through text-secondary-foreground">
                     {item.compareAtPrice?.amount}
                   </p>
-                  <span className="bg-[#D2EF9A] py-0.5 px-2.5 rounded-full">
+                  <span className="bg-[#D2EF9A] text-xs md:text-base py-0.5 px-1.5 md:px-2.5 rounded-full">
                     {percentage(item.price, item.compareAtPrice)}%
                   </span>
                 </>

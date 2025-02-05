@@ -26,17 +26,19 @@ export default function Social() {
               key={social.id}
               className="basis-1/2 sm:basis-1/3 md:basis-1/4 xl:basis-1/5"
             >
-              <div className="relative aspect-square rounded-4xl overflow-hidden group">
+              <div
+                className="relative aspect-square rounded-4xl overflow-hidden group"
+                tabIndex={0}
+              >
                 <Image
                   src={social.image || "/placeholder.svg"}
                   alt={social.id}
                   width={245}
                   height={245}
-                  className="object-cover rounded-4xl h-full w-full group-scale-110 duration-300 transition-transform"
+                  className="object-cover rounded-4xl h-full w-full transition-transform duration-300 group-hover:scale-110 group-focus-within:scale-110"
                 />
-                <div className="absolute inset-0 bg-black/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <div className="absolute inset-0 bg-black/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100" />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
                   <InstagramIcon size={40} color="white" />
                 </div>
               </div>
