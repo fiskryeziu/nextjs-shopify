@@ -331,19 +331,12 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ status: 401 });
   }
 
-  if (!isCollectionUpdate && !isProductUpdate) {
-    // We don't need to revalidate anything for any other topics.
-    return NextResponse.json({ status: 200 });
-  }
-
   if (isCollectionUpdate) {
     revalidateTag(TAGS.collections);
-    revalidateTag(TAGS.products);
   }
 
   if (isProductUpdate) {
     revalidateTag(TAGS.products);
-    revalidateTag(TAGS.collections);
   }
 
   return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
