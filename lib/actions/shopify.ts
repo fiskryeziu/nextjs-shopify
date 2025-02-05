@@ -120,7 +120,6 @@ export async function getBannerInfo() {
           }
         }
       `,
-    tags: [TAGS.metaobjects],
   });
 
   const images = res.body?.data?.metaobject?.fields[0].references?.nodes.map(
@@ -252,8 +251,7 @@ export async function getProducts(): Promise<Categories> {
     return result;
   };
 
-  // Example usage with API response
-  return transformProducts(res.body?.data);
+  return transformProducts(res?.body?.data);
 }
 
 export async function getRelatedProducts() {
@@ -310,7 +308,8 @@ export async function getRelatedProducts() {
 }
 
 export async function revalidate(req: NextRequest): Promise<NextResponse> {
-  // Webhook topics for collections, products, and metaobjects
+  // We always need to respond with a 200 status code to Shopify,
+  // otherwise it will continue to retry the request.
   const collectionWebhooks = [
     "collections/create",
     "collections/delete",
@@ -321,46 +320,27 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
     "products/delete",
     "products/update",
   ];
-  const metaobjectWebhooks = [
-    "metaobjects/create",
-    "metaobjects/delete",
-    "metaobjects/update",
-  ];
-
   const topic = (await headers()).get("x-shopify-topic") || "unknown";
   const secret = req.nextUrl.searchParams.get("secret");
-
   const isCollectionUpdate = collectionWebhooks.includes(topic);
   const isProductUpdate = productWebhooks.includes(topic);
-  const isMetaobjectUpdate = metaobjectWebhooks.includes(topic);
 
-  // Ensure the secret matches
   if (!secret || secret !== process.env.SHOPIFY_REVALIDATION_SECRET) {
     console.error("Invalid revalidation secret.");
     return NextResponse.json({ status: 401 });
   }
 
-  // No revalidation needed for unhandled topics
-  if (!isCollectionUpdate && !isProductUpdate && !isMetaobjectUpdate) {
+  if (!isCollectionUpdate && !isProductUpdate) {
+    // We don't need to revalidate anything for any other topics.
     return NextResponse.json({ status: 200 });
   }
 
-  // Revalidate for collections or products
   if (isCollectionUpdate) {
     revalidateTag(TAGS.collections);
   }
 
   if (isProductUpdate) {
     revalidateTag(TAGS.products);
-  }
-
-  // Handle metaobject updates with filters
-  if (isMetaobjectUpdate) {
-    const filter = req.nextUrl.searchParams.get("filter") || "";
-
-    if (filter.includes("type:banner")) {
-      revalidateTag(TAGS.metaobjectsBanner);
-    }
   }
 
   return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
