@@ -218,7 +218,7 @@ export async function getProducts(): Promise<Categories> {
           }
         }
       `,
-    tags: [TAGS.collections],
+    tags: [TAGS.collections, TAGS.products],
   });
 
   const transformProducts = (data) => {
@@ -285,6 +285,7 @@ export async function getRelatedProducts() {
           }
         }
       `,
+    tags: [TAGS.products],
   });
 
   const transformProducts = res.body?.data?.products?.edges.map((product) => {
@@ -337,10 +338,12 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
 
   if (isCollectionUpdate) {
     revalidateTag(TAGS.collections);
+    revalidateTag(TAGS.products);
   }
 
   if (isProductUpdate) {
     revalidateTag(TAGS.products);
+    revalidateTag(TAGS.collections);
   }
 
   return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
